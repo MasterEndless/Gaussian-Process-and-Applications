@@ -1,9 +1,10 @@
 %Implementation of Pivited Cholesky Composition
-A=[6 3 0;
-3 6 -6;
-0 -6 11];    %semi-positive matrix
+A_=randn(10);
+C=A_'*A_;
+B=randn(10);
+A=C+B;
 
-e=0.1;            %Error
+e=0.01;            %Error
 n=size(A,1);
 
 m=1;
@@ -16,7 +17,10 @@ l=zeros(n,n);   %triangular matrix we want
 
 
 while error>e
-    [argvalue, i] = max(d(Pi(m:end)));
+    for j=m:n
+        test = d(Pi(j));
+    end
+    [argvalue, i]=max(test);
     a=Pi(m);
     Pi(m)=Pi(i);
     Pi(i)=a;
@@ -24,8 +28,6 @@ while error>e
     for i = (m+1:n)
         S=0;
         for j =(1:m-1)
-            l(j,Pi(m))
-            l(j,Pi(i))
             S=S+l(j,Pi(m)).*l(j,Pi(i));
         end
         l(m,Pi(i))=(A(Pi(m),Pi(i))-S)./l(m,Pi(m));
@@ -40,10 +42,7 @@ while error>e
     m=m+1;      
 end
 S_Am=zeros(3,3);
-for i=(1:m-1)
-    S_Am=S_Am+l(:,i)*l(:,i)';
-end
-Am=S_Am;
+Am=l*l';
 
 
     
